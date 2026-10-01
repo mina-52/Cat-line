@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>Pet Sticker TikTok</title>
+<style>
+@font-face { font-family: "Rounded"; font-weight: 500; src: url(../assets/fonts/MPLUSRounded1c-500.ttf); }
+@font-face { font-family: "Rounded"; font-weight: 800; src: url(../assets/fonts/MPLUSRounded1c-800.ttf); }
+@font-face { font-family: "Rounded"; font-weight: 900; src: url(../assets/fonts/MPLUSRounded1c-900.ttf); }
+@font-face { font-family: "NotoJP"; font-weight: 400; src: url(../assets/fonts/NotoSansJP-400.ttf); }
+
+:root {
+  --pink: #ff5c93;
+  --line-green: #06c755;
+  --chat-bg: #8cabd9;
+  --bubble-me: #8de055;
+  --ink: #2b2b33;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1080px; height: 1920px; overflow: hidden; background: #fff3f7; }
+body { font-family: "NotoJP", "Noto Color Emoji", sans-serif; color: var(--ink); }
+
+#stage { position: relative; width: 1080px; height: 1920px; overflow: hidden;
+  background: radial-gradient(circle at 20% 10%, #ffe1ec 0, transparent 45%),
+              radial-gradient(circle at 90% 90%, #dff3e6 0, transparent 50%),
+              linear-gradient(180deg, #fff6f9 0%, #fdf0f5 100%); }
+.paw { position: absolute; font-size: 64px; opacity: .13; font-family: "Noto Color Emoji"; }
+
+/* ---------- hook banner ---------- */
+#banner { position: absolute; left: 0; right: 0; top: 120px; text-align: center; font-family: "Rounded", "Noto Color Emoji"; }
+#banner .kicker { display: inline-block; font-weight: 800; font-size: 42px; color: #fff; background: var(--line-green);
+  padding: 10px 34px 12px; border-radius: 999px; letter-spacing: 2px; box-shadow: 0 6px 0 #04a045; }
+#banner .title { margin-top: 22px; font-weight: 900; font-size: 92px; line-height: 1.12; color: var(--ink);
+  text-shadow: 0 0 0 #fff; letter-spacing: 1px; }
+#banner .title em { font-style: normal; color: var(--pink);
+  background: linear-gradient(transparent 62%, #fff27a 62%, #fff27a 92%, transparent 92%); padding: 0 6px; }
+#banner .sub { margin-top: 14px; font-weight: 800; font-size: 40px; color: #6a6a78; }
+
+/* ---------- LINE chat card ---------- */
+#phone { position: absolute; left: 40px; top: 545px; width: 920px; height: 1215px; border-radius: 44px; overflow: hidden;
+  background: var(--chat-bg); box-shadow: 0 30px 70px rgba(90, 60, 90, .28), 0 0 0 10px #fff; display: flex; flex-direction: column; }
+.hdr { height: 104px; flex: none; display: flex; align-items: center; padding: 0 28px; background: #8aa8d6; color: #1c2537; }
+.hdr .back { width: 36px; height: 36px; border-left: 6px solid #1c2537; border-bottom: 6px solid #1c2537; transform: rotate(45deg); margin: 0 26px 0 12px; }
+.hdr .name { font-family: "NotoJP"; font-size: 40px; font-weight: 400; flex: 1; letter-spacing: 1px; }
+.hdr svg { width: 46px; height: 46px; margin-left: 30px; }
+
+#scroll { flex: 1; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; padding: 0 26px 18px; }
+.date { align-self: center; background: rgba(0, 0, 0, .14); color: #fff; font-size: 26px; padding: 4px 20px; border-radius: 999px; margin: 18px 0 10px; }
+.wrap { overflow: visible; flex: none; }
+.msg { display: flex; align-items: flex-end; padding-top: 22px; }
+.msg.me { justify-content: flex-end; }
+.msg .inner { display: flex; align-items: flex-end; gap: 12px; transform-origin: left bottom; }
+.msg.me .inner { transform-origin: right bottom; }
+.avatar { width: 78px; height: 78px; border-radius: 50%; flex: none; align-self: flex-start; background: #f2c6a0 center/cover;
+  display: flex; align-items: center; justify-content: center; font-size: 46px; font-family: "Noto Color Emoji"; }
+.col { display: flex; flex-direction: column; }
+.fname { font-size: 24px; color: #2f3c55; margin: 0 0 6px 6px; }
+.bubble { position: relative; max-width: 640px; font-size: 36px; line-height: 1.42; padding: 18px 28px; border-radius: 40px; background: #fff;
+  font-family: "NotoJP", "Noto Color Emoji"; }
+.them .bubble::before { content: ""; position: absolute; left: -10px; top: 0; width: 34px; height: 34px; background: #fff; border-bottom-right-radius: 30px;
+  clip-path: polygon(0 0, 100% 0, 100% 100%); }
+.me .bubble { background: var(--bubble-me); }
+.me .bubble::after { content: ""; position: absolute; right: -10px; top: 0; width: 34px; height: 34px; background: var(--bubble-me);
+  clip-path: polygon(0 0, 100% 0, 0 100%); }
+.meta { font-size: 22px; color: #34445f; line-height: 1.3; text-align: right; white-space: nowrap; }
+.them .meta { text-align: left; }
+.sticker { width: 330px; height: auto; display: block;
+  filter: drop-shadow(3px 0 0 #fff) drop-shadow(-3px 0 0 #fff) drop-shadow(0 3px 0 #fff) drop-shadow(0 -3px 0 #fff); }
+
+/* ---------- input bar + sticker picker ---------- */
+.inputbar { height: 104px; flex: none; background: #fff; display: flex; align-items: center; padding: 0 22px; gap: 22px; border-top: 1px solid #e3e3e3; }
+.inputbar svg { width: 46px; height: 46px; flex: none; }
+.inputbar .field { flex: 1; height: 66px; border-radius: 33px; background: #f2f3f5; display: flex; align-items: center; justify-content: space-between; padding: 0 22px; color: #b0b3b9; font-size: 30px; }
+#smile.active path, #smile.active circle { stroke: var(--line-green); }
+#picker { height: 0; flex: none; background: #fff; overflow: hidden; border-top: 1px solid #ececec; }
+#picker .tabs { height: 84px; display: flex; align-items: center; gap: 20px; padding: 0 22px; border-bottom: 1px solid #eee; }
+#picker .tab { width: 64px; height: 64px; border-radius: 12px; background: #f4f4f4 center/80% no-repeat; }
+#picker .tab.sel { background-color: #e7f8ee; outline: 3px solid var(--line-green); }
+#grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px 10px; padding: 14px 26px; }
+#grid .cell { height: 150px; display: flex; align-items: center; justify-content: center; border-radius: 18px; position: relative; }
+#grid .cell img { max-width: 92%; max-height: 92%; }
+#grid .cell.hl { background: #e2f6ea; }
+#tap { position: absolute; width: 110px; height: 110px; border-radius: 50%; background: rgba(255, 255, 255, .55); border: 6px solid rgba(255, 255, 255, .95);
+  box-shadow: 0 0 0 4px rgba(0, 0, 0, .12); pointer-events: none; opacity: 0; left: 0; top: 0; z-index: 30; }
+
+/* ---------- end card ---------- */
+#end { position: absolute; inset: 0; opacity: 0; z-index: 50; text-align: center; font-family: "Rounded", "Noto Color Emoji";
+  background: linear-gradient(180deg, #fff4f8 0%, #ffe4ee 100%); }
+#end .float { position: absolute; width: 250px; filter: drop-shadow(0 10px 14px rgba(120, 60, 90, .18)); }
+#end .t1 { position: absolute; left: 0; right: 0; top: 560px; font-weight: 900; font-size: 84px; line-height: 1.2; color: var(--ink); }
+#end .t1 em { font-style: normal; color: var(--pink); }
+#end .t1 .lg { color: var(--line-green); }
+#end .pets { position: absolute; left: 0; right: 0; top: 900px; font-weight: 800; font-size: 46px; color: #6a6a78; }
+#end .dm { position: absolute; left: 80px; right: 80px; top: 1040px; height: 180px; border-radius: 90px; white-space: nowrap; background: var(--pink); color: #fff;
+  font-weight: 900; font-size: 72px; display: flex; align-items: center; justify-content: center; box-shadow: 0 14px 0 #d83b72; letter-spacing: 2px; }
+#end .note { position: absolute; left: 0; right: 0; top: 1290px; font-weight: 800; font-size: 40px; color: #8a8a96; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="paws"></div>
+
+  <div id="banner">
+    <div class="kicker">犬・猫 なんでもOK</div>
+    <div class="title">うちの子が<br><em>LINEスタンプ</em>に！</div>
+    <div class="sub">あなたのペットで作れます 🐾 詳しくはDMへ</div>
+  </div>
+
+  <div id="phone">
+    <div class="hdr">
+      <div class="back"></div>
+      <div class="name">みき</div>
+      <svg viewBox="0 0 24 24" fill="none" stroke="#1c2537" stroke-width="2"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="#1c2537" stroke-width="2"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a1 1 0 0 1-1 1A16 16 0 0 1 4 5a1 1 0 0 1 1-1z"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="#1c2537" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </div>
+    <div id="scroll"><div class="date">今日</div></div>
+    <div class="inputbar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2"><path d="M12 4v16M4 12h16"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="2"/><circle cx="12" cy="13.5" r="3.5"/><path d="M8 7l1.5-3h5L16 7"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 16l-5-5-9 9"/></svg>
+      <div class="field"><span>Aa</span>
+        <svg id="smile" viewBox="0 0 24 24" fill="none" stroke="#777" stroke-width="2" style="width:42px;height:42px"><circle cx="12" cy="12" r="9"/><path d="M8 14.5s1.5 2 4 2 4-2 4-2"/><circle cx="9" cy="10" r=".6" fill="#777"/><circle cx="15" cy="10" r=".6" fill="#777"/></svg>
+      </div>
+      <svg viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>
+    </div>
+    <div id="picker">
+      <div class="tabs" id="tabs"></div>
+      <div id="grid"></div>
+    </div>
+  </div>
+  <div id="tap"></div>
+
+
+  <div id="end">
+    <div class="t1">自分のペットの<br><span class="lg">LINEスタンプ</span><br><em>創りませんか？</em></div>
+    <div class="pets">🐱 猫ちゃん　🐶 ワンちゃん　🐾</div>
+    <div class="dm">気になる方はDMへ 💌</div>
+    <div class="note">プロフィールからお気軽にどうぞ</div>
+  </div>
+</div>
+
+<script>
+const S = n => `../assets/stickers/${n}.png`;
+const STK = ["01_ohayo","02_ohayonya","03_oyasumi","04_oyasuminya","05_e","06_waa","07_goron","08_nadete",
+  "09_ganbaru","10_ryokai","11_hima","12_sukinya","13_muu","14_chira","15_ehe","16_ittekimasu",
+  "17_itterasshai","18_matane","19_hatena","20_pero","21_iine","22_daisuki","23_gaan","24_zutto"];
+
+// ---- timeline (seconds) ----
+const MSGS = [
+  { t: 0.0, who: "them", text: "おはよー☀️ 今日ひま？" , time: "8:02" },
+  { t: 0.5, who: "me",   sticker: "02_ohayonya", time: "8:02" },
+  { t: 1.55, who: "them", text: "え、なにそのスタンプ😳<br>かわいすぎるんだけど！", time: "8:03" },
+  { t: 2.35, who: "me",   text: "うちの子をスタンプにしたの🐱✨", time: "8:03" },
+  { t: 3.30, who: "them", text: "天才すぎる…<br>撫でさせて〜🥹", time: "8:04" },
+  { t: 5.05, who: "me",   sticker: "08_nadete", time: "8:04" },
+  { t: 5.85, who: "them", text: "今夜ごはん行こ！19時ね", time: "8:05" },
+  { t: 6.95, who: "me",   sticker: "10_ryokai", time: "8:05" },
+  { t: 7.75, who: "them", text: "私もうちのワンコで<br>作りたい！🐶", time: "8:06" },
+  { t: 8.85, who: "me",   sticker: "21_iine", time: "8:06" },
+  { t: 9.65, who: "them", text: "毎日使っちゃいそう💕", time: "8:07" },
+  { t: 10.55, who: "me",  sticker: "24_zutto", time: "8:07" },
+];
+const PICKER_OPEN = 4.0, PICKER_CLOSE = 11.2;
+// taps on picker cells: [time, index in STK]
+const TAPS = [[4.55, 1], [6.55, 2], [8.45, 5], [10.15, 7]];
+const END_IN = 11.6, DURATION = 15.5;
+
+// ---- build DOM ----
+const pawsEl = document.getElementById("paws");
+[[60,1700,-20],[880,1720,15],[960,420,10],[40,330,-10],[930,1830,-5],[200,1830,20]].forEach(([x,y,r]) => {
+  const d = document.createElement("div"); d.className = "paw"; d.textContent = "🐾";
+  d.style.left = x + "px"; d.style.top = y + "px"; d.style.transform = `rotate(${r}deg)`; pawsEl.appendChild(d);
+});
+
+const scroll = document.getElementById("scroll");
+const items = MSGS.map(m => {
+  const wrap = document.createElement("div"); wrap.className = "wrap";
+  const row = document.createElement("div"); row.className = "msg " + m.who;
+  const inner = document.createElement("div"); inner.className = "inner";
+  const body = m.sticker ? `<img class="sticker" src="${S(m.sticker)}">` : `<div class="bubble">${m.text}</div>`;
+  if (m.who === "them") {
+    inner.innerHTML = `<div class="avatar">🐻</div><div class="col"><div class="fname">みき</div><div style="display:flex;align-items:flex-end;gap:10px">${body}<div class="meta">${m.time}</div></div></div>`;
+  } else {
+    inner.innerHTML = `<div class="meta"><div class="read">既読</div>${m.time}</div>${body}`;
+  }
+  row.appendChild(inner); wrap.appendChild(row); scroll.appendChild(wrap);
+  return { m, wrap, inner, read: inner.querySelector(".read"), h: 0 };
+});
+
+const tabs = document.getElementById("tabs");
+["⏱", "02_ohayonya", "08_nadete", "13_muu", "22_daisuki"].forEach((n, i) => {
+  const d = document.createElement("div"); d.className = "tab" + (i === 1 ? " sel" : "");
+  if (n.length > 2) d.style.backgroundImage = `url(${S(n)})`; else { d.textContent = n; d.style.cssText += "display:flex;align-items:center;justify-content:center;font-size:34px;font-family:'Noto Color Emoji'"; }
+  tabs.appendChild(d);
+});
+const grid = document.getElementById("grid");
+const PICK = ["02_ohayonya","08_nadete","10_ryokai","15_ehe","12_sukinya","21_iine","22_daisuki","24_zutto"];
+const cells = PICK.map(n => { const c = document.createElement("div"); c.className = "cell"; c.innerHTML = `<img src="${S(n)}">`; grid.appendChild(c); return c; });
+
+const end = document.getElementById("end");
+const floats = [
+  ["05_e", 40, 140, -12], ["12_sukinya", 410, 120, 6], ["15_ehe", 790, 150, 10],
+  ["09_ganbaru", 30, 1420, 8], ["22_daisuki", 415, 1450, -6], ["19_hatena", 800, 1420, -10],
+].map(([n, x, y, r]) => { const im = document.createElement("img"); im.className = "float"; im.src = S(n);
+  im.style.left = x + "px"; im.style.top = y + "px"; end.appendChild(im); return { im, r }; });
+
+// ---- easing helpers ----
+const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const prog = (t, t0, d) => clamp((t - t0) / d);
+const easeOut = p => 1 - Math.pow(1 - p, 3);
+const easeInOut = p => p < .5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+const backOut = p => { const c1 = 1.9, c3 = c1 + 1; return 1 + c3 * Math.pow(p - 1, 3) + c1 * Math.pow(p - 1, 2); };
+
+window.ready = (async () => {
+  await document.fonts.ready;
+  await Promise.all([...document.images].map(i => i.complete ? 0 : new Promise(r => { i.onload = i.onerror = r; })));
+  items.forEach(it => { it.h = it.wrap.getBoundingClientRect().height; });
+  return true;
+})();
+
+const tapEl = document.getElementById("tap");
+const smile = document.getElementById("smile");
+const banner = document.getElementById("banner");
+const phone = document.getElementById("phone");
+const picker = document.getElementById("picker");
+const PICKER_H = 84 + 28 + 2 * 150 + 6;
+
+window.render = function (t) {
+  // banner pops in immediately so the point is clear from frame 1
+  const bp = prog(t, 0, .35);
+  banner.style.transform = `scale(${0.85 + 0.15 * backOut(bp)})`;
+  banner.style.opacity = 1;
+  // subtle pulse on title highlight
+  banner.querySelector("em").style.display = "inline-block";
+  banner.querySelector("em").style.transform = `scale(${1 + 0.04 * Math.sin(t * 5)})`;
+
+  // messages: grow the wrapper height (smooth scroll) + pop the bubble
+  items.forEach(it => {
+    const p = prog(t, it.m.t, .28);
+    it.wrap.style.height = (it.h * easeOut(p)) + "px";
+    it.wrap.style.display = t < it.m.t ? "none" : "block";
+    const s = it.m.sticker ? 0.3 + 0.7 * backOut(p) : 0.7 + 0.3 * backOut(p);
+    it.inner.style.transform = `scale(${s})`;
+    it.inner.style.opacity = clamp(p * 2.5);
+    if (it.read) it.read.style.visibility = t > it.m.t + .45 ? "visible" : "hidden";
+  });
+
+  // picker open/close
+  const po = easeInOut(prog(t, PICKER_OPEN, .35)) * (1 - easeInOut(prog(t, PICKER_CLOSE, .35)));
+  picker.style.height = (PICKER_H * po) + "px";
+  smile.classList.toggle("active", po > .5);
+
+  // taps (finger indicator + highlighted cell)
+  let tapShown = false;
+  cells.forEach(c => c.classList.remove("hl"));
+  const smileTap = PICKER_OPEN - .3;
+  const tapList = [[smileTap, -1], ...TAPS];
+  for (const [tt, idx] of tapList) {
+    const d = t - tt;
+    if (d >= -.25 && d < .45) {
+      const target = idx < 0 ? smile : cells[idx];
+      const r = target.getBoundingClientRect();
+      const a = d < 0 ? 1 + d / .25 : 1 - clamp((d - .2) / .25);
+      const sc = d < 0 ? 1.25 : 1 - .25 * clamp(d / .12);
+      tapEl.style.left = (r.left + r.width / 2 - 55) + "px";
+      tapEl.style.top = (r.top + r.height / 2 - 55) + "px";
+      tapEl.style.opacity = clamp(a);
+      tapEl.style.transform = `scale(${sc})`;
+      if (idx >= 0 && d >= 0) cells[idx].classList.add("hl");
+      tapShown = true;
+    }
+  }
+  if (!tapShown) tapEl.style.opacity = 0;
+
+
+  // end card
+  const e = easeOut(prog(t, END_IN, .45));
+  end.style.opacity = e;
+  end.style.transform = `translateY(${(1 - e) * 120}px)`;
+  phone.style.filter = e > 0 ? `blur(${e * 8}px)` : "none";
+  floats.forEach(({ im, r }, i) => {
+    const p = backOut(prog(t, END_IN + .25 + i * .1, .4));
+    im.style.transform = `translateY(${Math.sin(t * 3 + i) * 12}px) rotate(${r}deg) scale(${p})`;
+  });
+  const dm = end.querySelector(".dm");
+  const dp = prog(t, END_IN + .5, .4);
+  dm.style.transform = `scale(${(t < END_IN + .5 ? 0 : backOut(dp)) * (1 + 0.045 * Math.sin((t - END_IN) * 7))})`;
+};
+window.DURATION = DURATION;
+window.SFX = [...MSGS.map(m => ({ t: m.t, kind: m.who })), ...TAPS.map(([t]) => ({ t, kind: "tap" })), { t: END_IN + .5, kind: "end" }];
+</script>
+</body>
+</html>
